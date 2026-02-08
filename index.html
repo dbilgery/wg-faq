@@ -22,6 +22,7 @@
             --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.03), 0 10px 24px rgba(0, 0, 0, 0.04);
             --focus: 0 0 0 3px rgba(67, 56, 202, 0.22);
             --speed: 180ms cubic-bezier(.2, .8, .2, 1);
+            --accordion-speed: 260ms cubic-bezier(.22, .61, .36, 1);
         }
 
         * {
@@ -30,7 +31,7 @@
 
         body {
             margin: 0;
-            background: #e9e9eb;
+            background: var(--bg);
             font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
             color: var(--text);
             -webkit-font-smoothing: antialiased;
@@ -208,6 +209,8 @@
             cursor: pointer;
             font: inherit;
             outline: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .faq-trigger:focus-visible {
@@ -240,10 +243,18 @@
         }
 
         .faq-panel {
-            height: 0;
+            max-height: 0;
             opacity: 0;
             overflow: hidden;
-            transition: height var(--speed), opacity var(--speed);
+            will-change: max-height, opacity;
+            contain: layout paint;
+            transform: translateZ(0);
+            transition: max-height var(--accordion-speed), opacity var(--accordion-speed);
+        }
+
+        .faq-item.open .faq-panel {
+            max-height: var(--panel-max, 420px);
+            opacity: 1;
         }
 
         .faq-panel-inner {
@@ -290,6 +301,10 @@
         }
 
         @media (max-width: 700px) {
+            :root {
+                --accordion-speed: 220ms cubic-bezier(.22, .61, .36, 1);
+            }
+
             .shell {
                 padding-top: 36px;
             }
@@ -304,6 +319,20 @@
 
             .faq-panel-inner {
                 padding: 10px 14px 14px;
+            }
+
+            .faq-item {
+                transition: border-color var(--speed), background-color var(--speed);
+            }
+
+            .faq-item:hover {
+                transform: none;
+                box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75) inset;
+                background: var(--surface);
+            }
+
+            .faq-item.open {
+                box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75) inset, 0 6px 14px rgba(0, 0, 0, 0.06);
             }
 
             .contact {
@@ -348,22 +377,15 @@
         const FAQ = [
             { id: "wifi", category: "Alltag", title: "Wie verbinde ich mich mit dem WLAN?", answer: "<p><strong>SSID:</strong> WM2_Guest</p><p><strong>Passwort:</strong> Bitte an der Rezeption erfragen.</p><p>Falls die Verbindung nicht klappt: Einstellungen > WLAN > WM2_Guest waehlen.</p>" },
             { id: "waesche", category: "Alltag", title: "Wie benutze ich Waschmaschine und Trockner?", answer: "<p><strong>Standort:</strong> Waschkeller (1. UG). Durchgang nutzen um an Waschraum zu gelangen.</p><p><strong>Bedienung:</strong> 2€-Münzen einwerfen. 2€ = 2:30h waschen, unabhängig des Waschprogramms.</p><p><strong>Tipps:</strong> Vario Taste drücken, um Waschdauer an tatsächliche Waschmenge anzupassen.</strong></p><p><strong>Hinweis:</strong> Die Waschmaschine geht nach Ablauf der Zeit automatisch aus und unterbricht einen noch laufenden Waschvorgang.</p><p><strong>Beachten:</strong> Bitte die Maschinen direkt nach Nutzung leeren, damit andere Mitbewohner auch waschen können.</p>" },
-
             { id: "supermarkt", category: "Umgebung", title: "Wo ist der naechste Supermarkt?", answer: "<p>Der naechste Supermarkt ist das REWE-Geschaeft in der Schlueterstrasse, nur ca. 150 Meter von WM2 entfernt.</p><p>Oeffnungszeiten: Mo-Sa 6:00-22:00 Uhr, So 7:00-22:00 Uhr.</p>" },
             { id: "bushaltestelle", category: "Ankommen", title: "Wie komme ich zur naechsten Bushaltestelle?", answer: "<p>Die naechsten Bushaltestellen sind:</p><ul><li><strong>Schlueterstrasse:</strong> ca. 100m noerdlich (Linien 1, 3, 5)</li><li><strong>Marktplatz:</strong> ca. 250m westlich (alle Linien)</li></ul><p>Fahrplaninfo: Pruefe die VHB-Website oder MVG-App.</p>" },
             { id: "heizung", category: "Alltag", title: "Wie stelle ich die Heizung ein?", answer: "<p>Der Heizkoerper wird ueber das Thermostat gesteuert. Drehe nach links zum Abkuehlen, nach rechts zum Aufwaermen.</p><p>Falls die Heizung nicht funktioniert, melde es bitte an der Rezeption.</p>" },
-            { id: "putzplan", category: "Alltag", title: "Wer ist wann mit Putzen dran?", answer: "<p>Der Putzplan haengt in der Kueche und im Treppenhaus aus.</p><p>Jeder ist fuer seinen Bereich zustaendig. Bei Fragen: Hausmeisterin ansprechen.</p>" },
             { id: "muellabfuhr", category: "Alltag", title: "Wann kommt die Muellabfuhr?", answer: "<p><strong>Dienstags und freitags:</strong> morgens ab 6:00 Uhr</p><p>Bitte stelle die Muelltonnen am Vorabend bereit.</p><p><strong>Gelbe Saecke:</strong> jeden 2. Montag</p>" },
             { id: "ruhezeiten", category: "Alltag", title: "Welche Ruhezeiten gibt es?", answer: "<p><strong>Ruhezeiten:</strong></p><ul><li>Mo-Fr: 22:00-6:00 Uhr</li><li>Sa: 22:00-9:00 Uhr</li><li>So & Feiertage: 22:00-9:00 Uhr</li></ul><p>Bitte respektiere diese Zeiten.</p>" },
-            { id: "miete", category: "Alltag", title: "Wie und wann zahle ich Miete?", answer: "<p>Die Miete ist immer am 1. des Monats faellig.</p><p>Zahlungsart: Bankueberweisung.</p><p>Die Bankverbindung haengt im Treppenhaus aus oder ist an der Rezeption erhaeltlich.</p>" },
             { id: "besucher", category: "Alltag", title: "Darf ich Besuch einladen?", answer: "<p>Ja, Besuch ist willkommen.</p><p>Fuer laengere Aufenthalte (ueber 2 Wochen) informiere bitte Hausmeisterin oder Verwaltung.</p><p>Beachte die Ruhezeiten.</p>" },
-            { id: "hausmeisterin", category: "Umgebung", title: "Wie kontaktiere ich die Hausmeisterin?", answer: "<p><strong>Hausmeisterin:</strong> Zimmer 001 (Erdgeschoss)</p><p><strong>Sprechzeiten:</strong> Mo-Fr 8:00-12:00 und 14:00-17:00 Uhr</p><p>Fuer dringende Probleme: Aushang im Treppenhaus beachten.</p>" },
-            { id: "reparatur", category: "Notfaelle", title: "Was mache ich bei Schaeden?", answer: "<p>Melde Schaeden sofort der Hausmeisterin.</p><p>Bitte notiere:</p><ul><li>Was ist kaputt?</li><li>Wann bemerkt?</li><li>Kontaktdaten</li></ul><p>Fotos helfen bei der Bearbeitung.</p>" },
-            { id: "paket", category: "Alltag", title: "Wo erhalte ich Pakete?", answer: "<p>Pakete werden in der Rezeption angenommen.</p><p>Pruefe dein Postfach in der Eingangshalle auf Hinweise.</p><p>Wichtig: Name und Zimmernummer auf dem Paket.</p>" },
             { id: "parkplatz", category: "Ankommen", title: "Wo kann ich mein Auto parken?", answer: "<p>Parkplaetze befinden sich in der Tiefgarage unter dem Gebaeude.</p><p>Strassenparken in der Schlueterstrasse ist gebuehrenpflichtig.</p><p>Parkkarten gibt es in der Rezeption.</p>" },
         ];
 
-        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const openIds = new Set();
         const synonyms = {
             wlan: "wifi",
@@ -496,19 +518,22 @@
                 const row = document.createElement("article");
                 row.className = `faq-item${isOpen ? " open" : ""}`;
                 row.innerHTML = `
-                    <button id="${buttonId}" class="faq-trigger" type="button" aria-expanded="${isOpen}" aria-controls="${panelId}">
-                        <p class="faq-question">${highlightTitle(item.title, searchQuery)}</p>
-                        <span class="faq-plus" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                            <path d="M12 5v14M5 12h14"></path>
-                        </svg>
-                        </span>
-                    </button>
-                    <div id="${panelId}" class="faq-panel" role="region" aria-labelledby="${buttonId}" ${isOpen ? "" : "hidden"}>
-                        <div class="faq-panel-inner">${item.answer}</div>
-                    </div>
+          <button id="${buttonId}" class="faq-trigger" type="button" aria-expanded="${isOpen}" aria-controls="${panelId}">
+            <p class="faq-question">${highlightTitle(item.title, searchQuery)}</p>
+            <span class="faq-plus" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+            </span>
+          </button>
+          <div id="${panelId}" class="faq-panel" role="region" aria-labelledby="${buttonId}" aria-hidden="${isOpen ? "false" : "true"}">
+            <div class="faq-panel-inner">${item.answer}</div>
+          </div>
                 `;
                 container.appendChild(row);
+                const panel = row.querySelector(".faq-panel");
+                const inner = row.querySelector(".faq-panel-inner");
+                if (panel && inner) panel.style.setProperty("--panel-max", `${inner.scrollHeight}px`);
             });
 
             emptyState.hidden = visibleItems.length > 0;
@@ -517,50 +542,28 @@
 
         function animatePanel(item, expand) {
             const panel = item.querySelector(".faq-panel");
-            const inner = item.querySelector(".faq-panel-inner");
             const trigger = item.querySelector(".faq-trigger");
+            const inner = item.querySelector(".faq-panel-inner");
 
-            if (!panel || !inner || !trigger) return;
+            if (!panel || !trigger || !inner) return;
 
+            panel.style.setProperty("--panel-max", `${inner.scrollHeight}px`);
             item.classList.toggle("open", expand);
             trigger.setAttribute("aria-expanded", String(expand));
-
-            if (prefersReducedMotion) {
-                panel.hidden = !expand;
-                panel.style.height = "";
-                panel.style.opacity = "";
-                return;
-            }
-
-            if (expand) {
-                panel.hidden = false;
-                panel.style.height = "0px";
-                panel.style.opacity = "0";
-                requestAnimationFrame(() => {
-                    panel.style.height = `${inner.scrollHeight}px`;
-                    panel.style.opacity = "1";
-                });
-                panel.addEventListener("transitionend", function onEnd(e) {
-                    if (e.propertyName !== "height") return;
-                    panel.style.height = "auto";
-                    panel.removeEventListener("transitionend", onEnd);
-                });
-            } else {
-                panel.style.height = `${inner.scrollHeight}px`;
-                panel.style.opacity = "1";
-                requestAnimationFrame(() => {
-                    panel.style.height = "0px";
-                    panel.style.opacity = "0";
-                });
-                panel.addEventListener("transitionend", function onEnd(e) {
-                    if (e.propertyName !== "height") return;
-                    panel.hidden = true;
-                    panel.style.height = "";
-                    panel.style.opacity = "";
-                    panel.removeEventListener("transitionend", onEnd);
-                });
-            }
+            panel.setAttribute("aria-hidden", String(!expand));
         }
+
+        let resizeRaf = 0;
+        window.addEventListener("resize", () => {
+            if (resizeRaf) cancelAnimationFrame(resizeRaf);
+            resizeRaf = requestAnimationFrame(() => {
+                document.querySelectorAll(".faq-item.open").forEach((item) => {
+                    const panel = item.querySelector(".faq-panel");
+                    const inner = item.querySelector(".faq-panel-inner");
+                    if (panel && inner) panel.style.setProperty("--panel-max", `${inner.scrollHeight}px`);
+                });
+            });
+        }, { passive: true });
 
         document.getElementById("faqContainer").addEventListener("click", (e) => {
             const trigger = e.target.closest(".faq-trigger");
