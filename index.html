@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Häufig gestellte Fragen</title>
+    <meta name="description" content="Schau einfach mal hier rein." />
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html,
+        body {
+            background: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgb(17, 24, 39);
+            margin: 0;
+        }
+
+        .header-divider {
+            color: rgb(107, 114, 128);
+            font-size: 1rem;
+        }
+
+        .header-subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgb(75, 85, 99);
+            margin: 0;
+        }
+
+        details>summary {
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            text-decoration: none;
+            color: rgb(17, 24, 39);
+        }
+
+        .category-card-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 8px;
+            color: rgb(75, 85, 99);
+        }
+
+        .category-card-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.3;
+            color: rgb(17, 24, 39);
+        }
+
+        .faq-section {
+            margin-bottom: 40px;
+        }
+
+        .faq-section-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: rgb(17, 24, 39);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .faq-section-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            color: rgb(75, 85, 99);
+        }
+
+        #faqContainer {
+            padding: 0 8px;
+        }
+
+        .faq-item {
+            border-radius: 10px;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            transition: all var(--transition-fast);
+            overflow: hidden;
+        }
+
+        .faq-item:active {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        .faq-item[open] {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        .faq-item summary {
+            cursor: pointer;
+            user-select: none;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: background-color var(--transition-fast);
+            min-height: 48px;
+        }
+
+        .faq-item summary:active {
+            background-color: rgba(249, 250, 251, 0.6);
+        }
+
+        .faq-item[open]>summary {
+            background-color: rgba(249, 250, 251, 0.8);
+        }
+
+        .faq-summary-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin: 0;
+            color: rgb(17, 24, 39);
+            line-height: 1.5;
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+        }
+
+        .chevron {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            transition: transform var(--transition-fast);
+            color: rgb(107, 114, 128);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .faq-item[open] .chevron {
+            transform: rotate(180deg);
+            color: rgb(17, 24, 39);
+        }
+
+        .faq-item-content {
+            padding: 12px 16px 14px 16px;
+            color: rgb(55, 65, 81);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            animation: slideDown var(--transition-fast) ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+
+            to {
+                opacity: 1;
+                max-height: 1000px;
+            }
+        }
+
+        .faq-item-content p {
+            margin: 0 0 8px 0;
+            color: rgb(55, 65, 81);
+        }
+
+        .faq-item-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-item-content ul {
+            margin: 8px 0;
+            padding-left: 20px;
+            color: rgb(55, 65, 81);
+        }
+
+        .faq-item-content li {
+            margin: 4px 0;
+        }
+
+        .faq-item-content a {
+            color: rgb(75, 85, 99);
+            text-decoration: underline;
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all var(--transition-fast);
+            background: white;
+            color: rgb(17, 24, 39);
+        }
+
+        .search-input::placeholder {
+            color: rgb(156, 163, 175);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: rgb(75, 85, 99);
+            box-shadow: 0 0 0 3px rgba(75, 85, 99, 0.08);
+            background: white;
+        }
+
+        .clear-btn {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <div class="header">
+        <div style="max-width: 100%; margin: 0 auto; padding: 12px 16px;">
+            <div class="header-content">
+                <h1 class="header-title">Wangener Marktplatz 2</h1>
+                <span class="header-divider">|</span>
+                <h2 class="header-subtitle">Häufig gestellte Fragen</h2>
+            </div>
+        </div>
+    </div>
+    <div style="max-width: 100%; margin: 0 auto; padding: 16px;">
+        <!-- Search -->
+        <div style="margin-bottom: 24px;">
+            <div class="search-wrapper">
+                <input id="searchInput" type="search" placeholder="Stichwortsuche…" class="search-input" autocomplete="off" />
+                <button id="clearBtn" class="clear-btn hidden" aria-label="Suche löschen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Category Cards (shown initially) -->
+        <div id="categoryCardsContainer" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 32px;">
+            <!-- Category cards will be rendered here -->
+        </div>
+        <!-- Main Content -->
+        <main>
+            <!-- Category Sections -->
+            <div id="faqContainer" style="display: none;">
+                <!-- Sections will be rendered here -->
+            </div>
+            <!-- Empty State -->
+            <div id="emptyState" style="text-align: center; padding: 48px 16px; display: none;">
+                <p style="color: rgb(107, 114, 128); font-size: 1rem;">Keine Treffer gefunden. Versuche andere Suchbegriffe.</p>
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer style="margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(0, 0, 0, 0.06); font-size: 0.75rem; color: rgb(107, 114, 128);">
+            <p>© Wangener Marktplatz 2 · Häufig gestellte Fragen</p>
+        </footer>
+    </div>
+    <script>
+        const FAQ = [
+            {
+                id: "supermarkt",
+                category: "Umgebung",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>`,
+                title: "Wo ist der nächste Supermarkt?",
+                tags: ["einkauf", "rewe", "edeka", "supermarkt", "laden"],
+                answer: `<p>Der nächste Supermarkt ist das REWE-Geschäft in der Schlüterstraße, nur ca. 150 Meter von WM2 entfernt.</p><p>Öffnungszeiten: Mo-Sa 6:00-22:00 Uhr, So 7:00-22:00 Uhr.</p>`,
+                links: [],
+                priority: 3
+            },
+            {
+                id: "bushaltestelle",
+                category: "Ankommen",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h2"></path><path d="M6 15v2"></path><path d="M18 15v2"></path></svg>`,
+                title: "Wie komme ich zur nächsten Bushaltestelle?",
+                tags: ["bus", "haltestelle", "verkehr", "nahverkehr", "öpnv"],
+                answer: `<p>Die nächsten Bushaltestellen sind:</p><ul><li><strong>Schlüterstraße:</strong> ca. 100m nördlich (Linien 1, 3, 5)</li><li><strong>Marktplatz:</strong> ca. 250m westlich (alle Linien)</li></ul><p>Fahrplaninfo: Prüfe die VHB-Website oder MVG-App.</p>`,
+                links: [],
+                priority: 2
+            },
+            {
+                id: "notfall",
+                category: "Notfälle",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>`,
+                title: "Was ist im Notfall zu tun?",
+                tags: ["notfall", "rettung", "krankenwagen", "feuerwehr", "polizei"],
+                answer: `<p><strong>Notruf:</strong> 112 (kostenlos von jedem Telefon)</p><p>Ärztlicher Notfalldienst: 116 117</p><p>Polizei: 110</p><p>Bitte geben Sie bei Anrufen Ihren Standort (Schlüterstraße X, WM2) an.</p>`,
+                links: [],
+                priority: 1
+            },
+            {
+                id: "wifi",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.94 0"></path><circle cx="12" cy="20" r="1"></circle></svg>`,
+                title: "Wie verbinde ich mich mit dem WLAN?",
+                tags: ["wlan", "wifi", "internet", "passwort", "verbindung"],
+                answer: `<p><strong>SSID:</strong> WM2_Guest</p><p><strong>Passwort:</strong> Bitte an der Rezeption erfragen</p><p>Die Verbindung sollte automatisch hergestellt werden. Falls nicht: Einstellungen → WLAN → WM2_Guest wählen.</p>`,
+                links: [],
+                priority: 3
+            },
+            {
+                id: "heizung",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76v1.75a2.75 2.75 0 1 1-5.5 0v-1.75"></path><path d="M9 9h0"></path><path d="M15 9h0"></path><path d="M9 13h6"></path><path d="M12 3v7"></path><circle cx="12" cy="3" r="1"></circle></svg>`,
+                title: "Wie stelle ich die Heizung ein?",
+                tags: ["heizung", "temperatur", "warm", "kalt", "thermostat"],
+                answer: `<p>Der Heizkörper wird über das Thermostat an der Wand gesteuert. Drehe den Regler nach links zum Abkühlen, nach rechts zum Aufwärmen.</p><p>Falls die Heizung nicht funktioniert, melde es bitte an der Rezeption.</p>`,
+                links: [],
+                priority: 2
+            },
+            {
+                id: "putzplan",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg>`,
+                title: "Wer ist wann mit Putzen dran?",
+                tags: ["putzplan", "putzen", "reinigung", "sauberkeit", "plan"],
+                answer: `<p>Der Putzplan hängt in der Küche und im Treppenhaus aus.</p><p>Jeder ist für seinen Bereich zuständig. Bei Fragen oder Problemen: Spreche die Hausmeisterin an.</p>`,
+                links: [],
+                priority: 2
+            },
+            {
+                id: "muellabfuhr",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`,
+                title: "Wann kommt die Müllabfuhr?",
+                tags: ["müll", "abfuhr", "trash", "mülltonne", "müllwagen"],
+                answer: `<p><strong>Dienstags und Freitags:</strong> Morgens ab 6:00 Uhr</p><p>Bitte stelle die Mülltonnen schon am Vorabend zur Straße.</p><p>Gelbe Säcke: Jeden 2. Montag</p>`,
+                links: [],
+                priority: 3
+            },
+            {
+                id: "ruhezeiten",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><path d="M12 1v6m0 6v6"></path><path d="M4.22 4.22l4.24 4.24m0 5.08l-4.24 4.24"></path><path d="M1 12h6m6 0h6"></path><path d="M4.22 19.78l4.24-4.24m5.08 0l4.24 4.24"></path><path d="M12 17v6"></path><path d="M19.78 19.78l-4.24-4.24m0-5.08l4.24-4.24"></path><path d="M23 12h-6m-6 0H5"></path><path d="M19.78 4.22l-4.24 4.24m-5.08 0l-4.24-4.24"></path></svg>`,
+                title: "Welche Ruhezeiten gibt es?",
+                tags: ["ruhe", "lärm", "nacht", "frieden", "leise"],
+                answer: `<p><strong>Gesetzliche Ruhezeiten:</strong></p><ul><li>Mo-Fr: 22:00-6:00 Uhr</li><li>Sa: 22:00-9:00 Uhr</li><li>So & Feiertage: 22:00-9:00 Uhr</li></ul><p>Bitte respektiere diese Zeiten und vermittle Lärm.</p>`,
+                links: [],
+                priority: 2
+            },
+            {
+                id: "mieterezahlung",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`,
+                title: "Wie und wann zahle ich Miete?",
+                tags: ["miete", "zahlung", "zahlungsweise", "konto", "bankverbindung"],
+                answer: `<p>Miete wird immer am 1. des Monats fällig.</p><p>Zahlungsart: Banküberweisung</p><p>Bankverbindung hängt im Treppenhaus aus oder frage die Rezeption.</p>`,
+                links: [],
+                priority: 1
+            },
+            {
+                id: "besucher",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
+                title: "Darf ich Besuch einladen?",
+                tags: ["besucher", "besuch", "gast", "freunde", "übernachtung"],
+                answer: `<p>Ja, Besuch ist selbstverständlich willkommen!</p><p>Für längere Aufenthalte (über 2 Wochen) informiere bitte die Hausmeisterin oder die Verwaltung.</p><p>Beachte die Ruhezeiten und informiere Nachbarn, wenn Besuch kommt.</p>`,
+                links: [],
+                priority: 2
+            },
+            {
+                id: "hausmeisterin",
+                category: "Umgebung",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`,
+                title: "Wie kontaktiere ich die Hausmeisterin?",
+                tags: ["hausmeister", "kontakt", "phone", "telefon", "hausverwaltung"],
+                answer: `<p><strong>Hausmeisterin:</strong> Zimmer 001 (Erdgeschoss)</p><p><strong>Öffnungszeiten:</strong> Mo-Fr 8:00-12:00 & 14:00-17:00 Uhr</p><p>Für dringende Probleme: Aushang im Treppenhaus beachten</p>`,
+                links: [],
+                priority: 2
+            },
+            {
+                id: "reparatur",
+                category: "Notfälle",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 1 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>`,
+                title: "Was mache ich bei Schäden?",
+                tags: ["schaden", "reparatur", "kaputt", "defekt", "schadensmeldung"],
+                answer: `<p>Melde Schäden sofort der Hausmeisterin.</p><p>Schreibe eine kurze Beschreibung:</p><ul><li>Was ist kaputt</li><li>Wann bemerkt</li><li>Deine Kontaktdaten</li></ul><p>Speichere den Bericht für Versicherungszwecke.</p>`,
+                links: [],
+                priority: 1
+            },
+            {
+                id: "paket",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>`,
+                title: "Wo erhalte ich Pakete?",
+                tags: ["paket", "paketannahme", "post", "dhl", "hermes"],
+                answer: `<p>Pakete werden in der Rezeption angenommen und verwahrt.</p><p>Überprüfe das Postfach in der Eingangshalle - dort findest du Hinweisen auf Pakete.</p><p>Benennung: Name oder Zimmer auf dem Paket</p>`,
+                links: [],
+                priority: 2
+            },
+            {
+                id: "parkplatz",
+                category: "Ankommen",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="5" r="1"></circle><circle cx="13" cy="13" r="1"></circle><circle cx="13" cy="21" r="1"></circle><circle cx="21" cy="13" r="1"></circle><circle cx="5" cy="13" r="1"></circle></svg>`,
+                title: "Wo kann ich mein Auto parken?",
+                tags: ["parkplatz", "auto", "parken", "garage", "fahrzeug"],
+                answer: `<p>Parkplätze befinden sich:</p><ul><li>Tiefgarage: Unter dem Gebäude</li><li>Straßenparken: Schlüterstraße (gebührenpflichtig)</li></ul><p>Parkkarte bekommst du in der Rezeption.</p>`,
+                links: [],
+                priority: 2
+            },
+            {
+                id: "waesche",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 12H2"></path><path d="M3.5 7h17"></path><path d="M3.5 17h17"></path><path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path></svg>`,
+                title: "Wie benutze ich Waschmaschine und Trockner?",
+                tags: ["wäsche", "waschen", "trockner", "waschmaschine", "reinigung"],
+                answer: `<p><strong>Standort:</strong> Waschkeller (Erdgeschoss)</p><p><strong>Bedienung:</strong> Münzen oder Wertmarken erforderlich (Rezeption)</p><p><strong>Öffnungszeiten:</strong> täglich 6:00-22:00 Uhr</p><p>Bitte räume die Maschine nach Gebrauch aus!</p>`,
+                links: [],
+                priority: 3
+            },
+            {
+                id: "kaputt-wc",
+                category: "Notfälle",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76v1.75a2.75 2.75 0 1 1-5.5 0v-1.75"></path><path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path></svg>`,
+                title: "Was tu ich, wenn die Toilette verstopft ist?",
+                tags: ["toilette", "verstopft", "wc", "abfluss", "defekt"],
+                answer: `<p>Versuche es zuerst mit einer Saugglocke.</p><p>Falls das nicht hilft: Melde es sofort der Hausmeisterin.</p><p><strong>WICHTIG:</strong> Spüle niemals Feuchttücher, Windeln oder andere Gegenstände hinunter!</p>`,
+                links: [],
+                priority: 1
+            },
+            {
+                id: "wasser-aus",
+                category: "Notfälle",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>`,
+                title: "Was mache ich bei Wasserschaden?",
+                tags: ["wasser", "schaden", "rohr", "leck", "wasserschaden"],
+                answer: `<p><strong>Sofort:</strong> Hauptwasserhahn abdrehen</p><p><strong>Dann:</strong> Hausmeisterin anrufen (Notfall!)</p><p><strong>Danach:</strong> Feuchtigkeit entfernen & lüften</p><p>Lass nichts unbeaufsichtigt!</p>`,
+                links: [],
+                priority: 1
+            },
+            {
+                id: "versicherung",
+                category: "Alltag",
+                categoryIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l-5.5 9h11z"></path><rect x="3" y="13" width="18" height="8"></rect></svg>`,
+                title: "Bin ich versichert?",
+                tags: ["versicherung", "schutz", "haftung", "insurance"],
+                answer: `<p>Es gibt eine Grundversicherung für Schäden durch Drittpersonen.</p><p>Für spezifische Fragen zur Versicherung kontaktiere die Verwaltung oder hole dir einen Informationsflyer in der Rezeption.</p>`,
+                links: [],
+                priority: 2
+            }
+        ];
+
+        const state = { query: '' };
+
+        const categoriesMap = {
+            'Alltag': { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>` },
+            'Ankommen': { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16z"></path><polyline points="12 5 12 12 16 14"></polyline></svg>` },
+            'Notfälle': { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>` },
+            'Umgebung': { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>` }
+        };
+
+        function normalize(s) {
+            return s.toLowerCase()
+                .replace(/[àáâäå]/g, 'a')
+                .replace(/[èéêë]/g, 'e')
+                .replace(/[ìíîï]/g, 'i')
+                .replace(/[òóôöõ]/g, 'o')
+                .replace(/[ùúûü]/g, 'u')
+                .replace(/ß/g, 'ss')
+                .replace(/[^a-z0-9äöüß ]/g, '');
+        }
+
+        function levenshtein(a, b) {
+            const len_a = a.length;
+            const len_b = b.length;
+            const d = Array(len_b + 1).fill(0).map(() => Array(len_a + 1).fill(0));
+            for (let i = 0; i <= len_a; i++) d[0][i] = i;
+            for (let j = 0; j <= len_b; j++) d[j][0] = j;
+            for (let j = 1; j <= len_b; j++) {
+                for (let i = 1; i <= len_a; i++) {
+                    const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+                    d[j][i] = Math.min(d[j - 1][i] + 1, d[j][i - 1] + 1, d[j - 1][i - 1] + cost);
+                }
+            }
+            return d[len_b][len_a];
+        }
+
+        function fuzzyScore(query, text) {
+            if (!query) return 0;
+            if (text.includes(query)) return 1;
+            const max_len = Math.max(query.length, text.length);
+            const dist = levenshtein(query, text.substring(0, query.length * 2));
+            const typo_score = 1 - dist / (query.length + 2);
+            return Math.max(0, typo_score);
+        }
+
+        function computeRank(item, query) {
+            const q = normalize(query);
+            const title = normalize(item.title);
+            const tags = item.tags.map(normalize).join(' ');
+            const answer = normalize(item.answer.replace(/<[^>]*>/g, ''));
+
+            const title_score = fuzzyScore(q, title) * 0.62;
+            const tags_score = fuzzyScore(q, tags) * 0.28;
+            const answer_score = fuzzyScore(q, answer) * 0.10;
+
+            const base = title_score + tags_score + answer_score;
+            const boost = item.priority / 3;
+            return base + boost * 0.1;
+        }
+
+        function renderCategoryCards() {
+            const container = document.getElementById('categoryCardsContainer');
+            container.innerHTML = '';
+
+            const categories = ['Alltag', 'Ankommen', 'Notfälle', 'Umgebung'];
+
+            categories.forEach(cat => {
+                const card = document.createElement('button');
+                card.className = 'category-card';
+                card.innerHTML = `
+            <div class="category-card-icon">${categoriesMap[cat].icon}</div>
+            <div class="category-card-title">${cat}</div>
+        `;
+                card.addEventListener('click', () => {
+                    document.getElementById('searchInput').value = cat;
+                    state.query = cat;
+                    window.location.hash = '';
+                    render();
+                });
+                container.appendChild(card);
+            });
+        }
+
+        function renderFaqItem(item) {
+            const details = document.createElement('details');
+            details.className = 'faq-item';
+            details.innerHTML = `
+        <summary>
+            <p class="faq-summary-title">${item.title}</p>
+            <div class="chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+        </summary>
+        <div class="faq-item-content">${item.answer}</div>
+    `;
+            return details;
+        }
+
+        function renderAllSections() {
+            const container = document.getElementById('faqContainer');
+            container.innerHTML = '';
+            container.style.display = 'block';
+
+            const groupedByCategory = {};
+            FAQ.forEach(item => {
+                if (!groupedByCategory[item.category]) {
+                    groupedByCategory[item.category] = [];
+                }
+                groupedByCategory[item.category].push(item);
+            });
+
+            ['Alltag', 'Ankommen', 'Notfälle', 'Umgebung'].forEach(category => {
+                if (!groupedByCategory[category]) return;
+
+                const section = document.createElement('div');
+                section.className = 'faq-section';
+
+                const title = document.createElement('div');
+                title.className = 'faq-section-title';
+                title.innerHTML = `
+            <div class="faq-section-icon">${categoriesMap[category].icon}</div>
+            <span>${category}</span>
+        `;
+                section.appendChild(title);
+
+                const items = document.createElement('div');
+                items.className = 'faq-items';
+                groupedByCategory[category].forEach(item => {
+                    items.appendChild(renderFaqItem(item));
+                });
+
+                section.appendChild(items);
+                container.appendChild(section);
+            });
+        }
+
+        function render() {
+            const query = document.getElementById('searchInput').value.trim();
+            state.query = query;
+
+            const clearBtn = document.getElementById('clearBtn');
+            const categoryCardsContainer = document.getElementById('categoryCardsContainer');
+            const faqContainer = document.getElementById('faqContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            if (!query) {
+                // Show category cards by default, hide FAQs
+                categoryCardsContainer.style.display = 'grid';
+                faqContainer.style.display = 'none';
+                emptyState.style.display = 'none';
+                clearBtn.classList.add('hidden');
+            } else {
+                // Show filtered FAQs when searching
+                clearBtn.classList.remove('hidden');
+
+                const results = FAQ
+                    .map(item => ({ ...item, rank: computeRank(item, query) }))
+                    .filter(item => item.rank > 0.1)
+                    .sort((a, b) => b.rank - a.rank);
+
+                categoryCardsContainer.style.display = 'none';
+
+                if (results.length === 0) {
+                    faqContainer.style.display = 'none';
+                    emptyState.style.display = 'block';
+                } else {
+                    faqContainer.innerHTML = '';
+                    faqContainer.style.display = 'block';
+                    emptyState.style.display = 'none';
+
+                    results.forEach(item => {
+                        faqContainer.appendChild(renderFaqItem(item));
+                    });
+                }
+            }
+        }
+
+        // Show all FAQs by default on page load
+        function initializeAllFaqs() {
+            faqContainer = document.getElementById('faqContainer');
+            faqContainer.innerHTML = '';
+
+            const groupedByCategory = {};
+            FAQ.forEach(item => {
+                if (!groupedByCategory[item.category]) {
+                    groupedByCategory[item.category] = [];
+                }
+                groupedByCategory[item.category].push(item);
+            });
+
+            ['Alltag', 'Ankommen', 'Notfälle', 'Umgebung'].forEach(category => {
+                if (!groupedByCategory[category]) return;
+
+                const section = document.createElement('div');
+                section.className = 'faq-section';
+
+                const title = document.createElement('div');
+                title.className = 'faq-section-title';
+                title.innerHTML = `
+            <div class="faq-section-icon">${categoriesMap[category].icon}</div>
+            <span>${category}</span>
+        `;
+                section.appendChild(title);
+
+                const items = document.createElement('div');
+                items.className = 'faq-items';
+                groupedByCategory[category].forEach(item => {
+                    items.appendChild(renderFaqItem(item));
+                });
+
+                section.appendChild(items);
+                faqContainer.appendChild(section);
+            });
+
+            // Show FAQs and hide category cards
+            document.getElementById('categoryCardsContainer').style.display = 'none';
+            document.getElementById('faqContainer').style.display = 'block';
+        }
+
+        document.getElementById('searchInput').addEventListener('input', render);
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            document.getElementById('searchInput').value = '';
+            render();
+            document.getElementById('searchInput').focus();
+        });
+
+        renderCategoryCards();
+        initializeAllFaqs();
+    </script>
+</body>
+
+</html>
